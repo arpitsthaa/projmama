@@ -1,0 +1,424 @@
+<!--
+File: index.html
+Description: Single-file multipage-responsive website (HTML, CSS, JS) for "Citizens Engineering and Builders"
+Instructions: Save this as index.html and open in a browser. To push to GitHub -> create a repo and commit this file, or add to your existing repo.
+-->
+
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Citizens Engineering & Builders — New Road, Pokhara</title>
+  <meta name="description" content="Citizens Engineering and Builders — Professional house and building design & costing from New Road, Pokhara. Get a quote today.">
+  <meta name="keywords" content="building design, house designs, construction, Pokhara, cost estimates, architecture">
+  <link rel="icon" href="data:;base64,iVBORw0KGgo="> <!-- simple blank favicon placeholder -->
+
+  <style>
+    /* ====== Root & Theme ====== */
+    :root{
+  --bg: #0a0f1e;        /* darker and warmer background */
+  --card: #111827;
+  --muted: #94a3b8;
+  --accent: #7dd3fc;    /* subtle cyan */
+  --accent-2: #60a5fa;
+  --glass: rgba(255,255,255,0.04);
+  --text: #e6eef5;
+  --success: #34d399;
+  --danger: #f87171;
+  --max-width: 1100px;
+  --radius: 12px;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+}
+
+[data-theme="light"]{
+  --bg: #f8fafc;
+  --card: #ffffff;
+  --muted: #475569;
+  --accent: #2563eb;
+  --accent-2: #0ea5e9;
+  --glass: rgba(0,0,0,0.04);
+  --text: #0f1724;
+}
+
+html,body{height:100%;}
+body{
+  margin:0;
+  background: linear-gradient(180deg, var(--bg), color-mix(in srgb, var(--bg) 90%, black 5%));
+  color:var(--text);
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+  display:flex;
+  justify-content:center;
+  padding:24px 12px;
+  transition: background 0.6s ease, color 0.6s ease;
+}
+
+.container{width:100%;max-width:var(--max-width);}
+
+/* ===== Navbar ===== */
+header{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:18px;
+  border-radius:14px;
+  background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent);
+  backdrop-filter: blur(6px);
+  transition: all 0.3s ease;
+}
+.brand{display:flex;gap:12px;align-items:center}
+.logo{
+  width:48px;
+  height:48px;
+  border-radius:10px;
+  background:linear-gradient(135deg,var(--accent),var(--accent-2));
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:700;
+  color:#012;
+  box-shadow:0 6px 18px rgba(2,6,23,0.6);
+}
+.brand h1{font-size:18px;margin:0}
+.brand p{margin:0;font-size:12px;color:var(--muted)}
+
+nav{display:flex;gap:12px;align-items:center}
+nav a{color:var(--muted);text-decoration:none;padding:8px 12px;border-radius:10px;font-size:14px;transition:all 0.3s;}
+nav a.active, nav a:hover{color:var(--text);background:var(--glass);box-shadow:0 4px 12px rgba(0,0,0,0.2);}
+
+/* Buttons */
+.controls{display:flex;gap:8px;align-items:center}
+.btn{
+  background:linear-gradient(90deg,var(--accent),var(--accent-2));
+  color:#012;
+  border:none;
+  padding:8px 12px;
+  border-radius:10px;
+  cursor:pointer;
+  font-weight:600;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.btn:hover{
+  transform: translateY(-3px);
+  box-shadow:0 12px 24px rgba(0,0,0,0.4);
+}
+.icon-btn{
+  background:transparent;
+  border:1px solid rgba(255,255,255,0.04);
+  padding:8px;
+  border-radius:8px;
+  cursor:pointer;
+}
+
+/* Hero */
+.hero{display:grid;grid-template-columns:1fr 420px;gap:28px;padding:40px 0;align-items:center;animation:fadeIn 1s ease-in;}
+.hero .intro h2{font-size:28px;margin:0 0 12px}
+.hero .intro p{margin:0;color:var(--muted);line-height:1.6}
+
+/* Project cards */
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px}
+.design{
+  border-radius:10px;
+  overflow:hidden;
+  position:relative;
+  cursor:pointer;
+  transition:transform .35s ease, box-shadow .35s ease;
+}
+.design img{
+  width:100%;
+  height:180px;
+  object-fit:cover;
+  display:block;
+  transition:transform 0.4s ease, filter 0.4s ease;
+}
+.design:hover img{
+  transform: scale(1.08);
+  filter: brightness(1.15);
+}
+.design:hover{
+  transform:translateY(-8px);
+  box-shadow:0 20px 30px rgba(2,6,23,0.6);
+}
+
+/* Open project animation */
+@keyframes openCard{
+  from{opacity:0;transform:scale(0.8);}
+  to{opacity:1;transform:scale(1);}
+}
+
+/* Sections */
+section{margin-top:28px;padding:18px;border-radius:12px}
+.card{background:var(--card);padding:18px;border-radius:12px}
+
+/* Costing table */
+table{width:100%;border-collapse:collapse}
+th,td{padding:10px;border-bottom:1px solid rgba(255,255,255,0.04);text-align:left}
+th{color:var(--muted);font-weight:600}
+
+/* Contact form */
+form{display:grid;gap:12px}
+input,textarea,select{
+  padding:10px;border-radius:8px;border:1px solid rgba(0,0,0,0.08);
+  background:transparent;color:var(--text);outline:none;
+}
+textarea{min-height:120px}
+
+/* Footer */
+footer{margin-top:28px;padding:18px;border-radius:12px;text-align:center;color:var(--muted)}
+
+/* Responsive */
+@media (max-width:880px){
+  .hero{grid-template-columns:1fr}
+  .preview{height:220px}
+  header{flex-direction:column;gap:12px;align-items:flex-start}
+  nav{flex-wrap:wrap}
+}
+
+/* Scroll reveal */
+.reveal{opacity:0;transform:translateY(18px);transition:opacity .6s ease, transform .6s ease}
+.reveal.show{opacity:1;transform:none}
+
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="brand">
+        <div class="logo">CEB</div>
+        <div>
+          <h1>Citizens Engineering & Builders</h1>
+          <p class="muted">New Road, Pokhara</p>
+        </div>
+      </div>
+
+      <nav aria-label="Main Navigation">
+        <a href="#home" class="navlink active" data-target="home">Home</a>
+        <a href="#designs" class="navlink" data-target="designs">Our Designs</a>
+        <a href="#costing" class="navlink" data-target="costing">Costing</a>
+        <a href="#contact" class="navlink" data-target="contact">Contact</a>
+      </nav>
+
+      <div class="controls">
+        <button class="icon-btn" id="themeToggle" aria-label="Toggle theme">🌗</button>
+        <button class="btn" id="quoteBtn">Get a Quote</button>
+      </div>
+    </header>
+
+    <!-- Single-file multi-page using sections -->
+    <main>
+      <!-- HOME -->
+      <section id="home" class="card reveal show">
+        <div class="hero">
+          <div class="intro">
+            <h2>Building Your Vision with Precision</h2>
+            <p>Citizens Engineering & Builders is a Pokhara-based firm specializing in residential and commercial building designs. Explore our project gallery and view approximate cost estimates for each design. We combine local expertise with modern construction practices to deliver quality results.</p>
+
+            <div style="margin-top:14px;display:flex;gap:10px">
+              <button class="btn" onclick="navigateTo('contact')">Request a Quote</button>
+              <button class="btn" href="#designs">View Designs</a>
+            </div>
+
+            <div style="margin-top:18px;display:flex;gap:12px;align-items:center">
+              <div class="muted">Located:</div>
+              <div>New Road, Pokhara</div>
+            </div>
+          </div>
+<aside class="showcase-card">
+            <div class="preview" aria-hidden="true">
+              <div style="text-align:center;">
+                <h3 style="margin:0 0 8px">Featured Project</h3>
+                <p class="muted" style="max-width:280px">Modern 3-storey home with terrace — efficient layout, natural light, and local materials.</p>
+              </div>
+            </div>
+
+            <div style="display:flex;gap:10px;margin-top:12px;align-items:center;justify-content:space-between">
+              <div class="muted">Quality construction • Timely delivery</div>
+              <div class="muted">Estimates available</div>
+            </div>
+          </aside>
+        </div>
+      </section>
+
+      <!-- DESIGNS -->
+      <section id="designs" class="card reveal">
+        <h3>Our Designs</h3>
+        <p class="muted">Click any design to see details and costing.</p>
+
+        <div class="grid" id="designGrid">
+          <!-- Items added by JS -->
+        </div>
+      </section>
+
+      <!-- COSTING -->
+      <section id="costing" class="card reveal">
+        <h3>Typical Cost Estimates</h3>
+        <p class="muted">Approximate costing per sq. ft. and sample project totals. Prices are illustrative — request a site visit for an accurate estimate.</p>
+
+        <div style="overflow:auto;margin-top:12px">
+          <table>
+            <thead>
+              <tr><th>Design</th><th>Area (sq.ft)</th><th>Rate (NPR/sq.ft)</th><th>Estimated Total</th></tr>
+            </thead>
+            <tbody id="costingTable">
+              <!-- Filled by JS -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- CONTACT -->
+      <section id="contact" class="card reveal">
+        <h3>Contact Us</h3>
+        <p class="muted">Send your requirements and we'll get back with a free estimate.</p>
+
+        <form id="contactForm">
+          <input type="text" id="name" name="name" placeholder="Full name" required>
+          <input type="email" id="email" name="email" placeholder="Email address" required>
+          <input type="tel" id="phone" name="phone" placeholder="Phone (optional)">
+          <select id="service" name="service">
+            <option value="site-consult">Site consultation</option>
+            <option value="residential">Residential design</option>
+            <option value="commercial">Commercial project</option>
+            <option value="cost-estimate">Cost estimate</option>
+          </select>
+          <textarea id="message" name="message" placeholder="Brief message and project details"></textarea>
+
+          <div style="display:flex;gap:8px;align-items:center">
+            <button type="submit" class="btn">Send Message</button>
+            <div id="formStatus" class="muted" aria-live="polite"></div>
+          </div>
+        </form>
+
+        <div style="margin-top:12px;color:var(--muted)">
+          <div><strong>Address:</strong> New Road, Pokhara</div>
+          <div><strong>Email:</strong> info@citizensbuilders.example (replace with real)</div>
+        </div>
+      </section>
+
+      <footer>
+        © <span id="year"></span> Citizens Engineering & Builders — New Road, Pokhara • Built with HTML/CSS/JS
+      </footer>
+    </main>
+  </div>
+
+  <template id="designTemplate">
+    <div class="design">
+      <img src="" alt="design image">
+      <div class="meta">
+        <div class="title"></div>
+        <div class="muted small desc"></div>
+      </div>
+    </div>
+  </template>
+
+  <script>
+    // ===== Data (replace images with real images later) =====
+    const designs = [
+      {id:1,title:'Modern Family Home',desc:'3 BHK, terrace, modern facade',img:'https://picsum.photos/seed/house1/800/600',area:1800,rate:1800},
+      {id:2,title:'Urban Townhouse',desc:'2.5 storey townhouse design',img:'https://picsum.photos/seed/house2/800/600',area:1400,rate:1600},
+      {id:3,title:'Compact Villa',desc:'Luxury 4 BHK villa layout',img:'https://picsum.photos/seed/house3/800/600',area:2600,rate:2100},
+      {id:4,title:'Commercial Block',desc:'Small commercial building',img:'https://picsum.photos/seed/house4/800/600',area:4000,rate:2000}
+    ];
+
+    // ===== Render designs =====
+    const grid = document.getElementById('designGrid');
+    const tpl = document.getElementById('designTemplate');
+    designs.forEach(d=>{
+      const el = tpl.content.cloneNode(true);
+      el.querySelector('img').src = d.img;
+      el.querySelector('img').alt = d.title;
+      el.querySelector('.title').textContent = d.title;
+      el.querySelector('.desc').textContent = d.desc;
+      const card = el.querySelector('.design');
+      card.addEventListener('click',()=> openDesign(d));
+      grid.appendChild(el);
+    });
+
+    // ===== Costing table =====
+    const tbody = document.getElementById('costingTable');
+    designs.forEach(d=>{
+      const total = d.area * d.rate;
+      const row = document.createElement('tr');
+      row.innerHTML = `<td>${d.title}</td><td>${d.area.toLocaleString()}</td><td>₨ ${d.rate.toLocaleString()}</td><td>₨ ${total.toLocaleString()}</td>`;
+      tbody.appendChild(row);
+    });
+
+    // ===== Design modal (simple overlay) =====
+    function openDesign(d){
+      const overlay = document.createElement('div');
+      overlay.style.position='fixed';overlay.style.inset=0;overlay.style.background='rgba(0,0,0,0.6)';overlay.style.display='flex';overlay.style.alignItems='center';overlay.style.justifyContent='center';overlay.style.zIndex=9999;
+      const card = document.createElement('div');
+      card.style.maxWidth='900px';card.style.width='92%';card.style.background='var(--card)';card.style.borderRadius='10px';card.style.padding='18px';card.style.boxShadow='0 20px 40px rgba(0,0,0,0.6)';
+      card.innerHTML = `
+        <div style="display:flex;gap:16px;flex-direction:column">
+          <img src="${d.img}" style="width:100%;height:360px;object-fit:cover;border-radius:8px">
+          <h3 style="margin:0">${d.title}</h3>
+          <p class="muted">${d.desc}</p>
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap">
+            <div>Area: <strong>${d.area.toLocaleString()} sq.ft</strong></div>
+            <div>Rate: <strong>₨ ${d.rate.toLocaleString()} / sq.ft</strong></div>
+            <div>Total: <strong>₨ ${(d.area*d.rate).toLocaleString()}</strong></div>
+          </div>
+          <div style="display:flex;gap:10px;margin-top:12px">
+            <button class="btn" onclick="requestQuoteFromDesign(${d.id})">Request Quote</button>
+            <button class="icon-btn" onclick="closeOverlay(this)">Close</button>
+          </div>
+        </div>
+      `;
+      overlay.appendChild(card);
+      overlay.addEventListener('click',(e)=>{ if(e.target===overlay) overlay.remove();});
+      document.body.appendChild(overlay);
+    }
+    function closeOverlay(el){ el.closest('div[style]').remove(); }
+    function requestQuoteFromDesign(id){ const d = designs.find(x=>x.id===id); navigateTo('contact'); document.getElementById('message').value = `Hi, I am interested in the "${d.title}" design. Please provide a detailed quote.`; }
+
+    // ===== Theme toggle =====
+    const root = document.documentElement;
+    const themeToggle = document.getElementById('themeToggle');
+    function applyTheme(t){ if(t==='light') root.setAttribute('data-theme','light'); else root.removeAttribute('data-theme'); localStorage.setItem('ceb_theme',t);}    
+    const saved = localStorage.getItem('ceb_theme') || 'dark'; applyTheme(saved);
+    themeToggle.addEventListener('click',()=>{ const cur = localStorage.getItem('ceb_theme')==='light' ? 'dark' : 'light'; applyTheme(cur); });
+
+    // ===== Simple navigation for single-file "pages" =====
+    const navlinks = document.querySelectorAll('.navlink');
+    function navigateTo(id){ document.querySelectorAll('main section').forEach(s=> s.classList.add('hidden')); const node = document.getElementById(id); if(node) node.classList.remove('hidden'); navlinks.forEach(a=> a.classList.toggle('active', a.dataset.target===id)); window.scrollTo({top:0,behavior:'smooth'}); }
+    // initial show home
+    document.querySelectorAll('main section').forEach(s=> s.classList.add('hidden'));
+    document.getElementById('home').classList.remove('hidden');
+
+    navlinks.forEach(a=> a.addEventListener('click', (e)=>{ e.preventDefault(); navigateTo(a.dataset.target); }));
+    document.getElementById('quoteBtn').addEventListener('click', ()=> navigateTo('contact'));
+
+    // ===== Contact form handling (client-only) =====
+    const form = document.getElementById('contactForm');
+    const status = document.getElementById('formStatus');
+    form.addEventListener('submit', (e)=>{
+      e.preventDefault();
+      const data = {name:form.name.value, email:form.email.value, phone:form.phone.value, service:form.service.value, message:form.message.value};
+      // Example: To actually send, connect to an email service / Formspree / backend. For now we store locally and give friendly message.
+      try{
+        const leads = JSON.parse(localStorage.getItem('ceb_leads')||'[]');
+        leads.push({...data, time:new Date().toISOString()});
+        localStorage.setItem('ceb_leads', JSON.stringify(leads));
+        status.textContent = 'Message saved locally. Replace with real backend to send emails.';
+        status.style.color = 'var(--success)';
+        form.reset();
+      }catch(err){ status.textContent='Failed to save message.'; status.style.color='var(--danger)'; }
+    });
+
+    // ===== Reveal on scroll =====
+    const reveals = document.querySelectorAll('.reveal');
+    function onScroll(){ reveals.forEach(r=>{ const rect = r.getBoundingClientRect(); if(rect.top < window.innerHeight - 80) r.classList.add('show'); }); }
+    window.addEventListener('scroll', onScroll); onScroll();
+
+    // ===== Footer year =====
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // ===== Accessibility niceties =====
+    // Keyboard navigation to close overlays: Esc
+    window.addEventListener('keydown', e=>{ if(e.key==='Escape'){ document.querySelectorAll('div[style]').forEach(d=>{ if(d.style.zIndex==='9999') d.remove(); }); } });
+
+  </script>
+</body>
+</html>
